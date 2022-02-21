@@ -1,5 +1,5 @@
 {
-  "name": "create-firebase-app",
+  "name": "create-my-firebase-app",
   "version": "0.0.1",
   "description": "Set up your firebase app with ease",
   "main": "index.js",
