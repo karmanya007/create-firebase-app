@@ -52,6 +52,7 @@ const commands = {
 
 const packages = {
 	'cross-env': true,
+	firebase: false,
 };
 
 const toolchains = {
@@ -220,7 +221,7 @@ export default async () => {
 
 	const installPackages = () => {
 		console.log(`Installing dependencies ......`);
-		let attr = ['install'];
+		let attr = ['install', '--save'];
 		let attrDev = ['install', '--save-dev'];
 		for (let pkg in packages)
 			packages[pkg] ? attrDev.push(pkg) : attr.push(pkg);
@@ -234,7 +235,7 @@ export default async () => {
 				install.error ? console.error(install.error) : null;
 				process.exit(process.exitCode);
 			}
-			console.log(`Dependencies ${attr.splice(1)} successfull installed`);
+			console.log(`Dependencies ${attr.splice(2)} successfull installed`);
 		}
 		if (attrDev.length > 2) {
 			const install = spawnSync('npm', attrDev, {
