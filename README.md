@@ -5,7 +5,7 @@ Set up your firebase app with ease
 ## Usage
 
 ```
-npx create-firebase-app
+npx create-my-firebase-app
 ```
 
 ## Packages Used
