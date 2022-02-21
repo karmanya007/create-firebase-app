@@ -124,26 +124,18 @@ export default async () => {
 	};
 
 	const createFiles = () => {
-		let tempFiles = [];
 		for (let file in copyFiles) {
-			try {
-				fs.copyFileSync(
-					path.join(path.dirname('./'), `template/${copyFiles[file]}`),
-					path.join(path.dirname('./'), `${state.appName}/${copyFiles[file]}`),
-					fs.constants.COPYFILE_EXCL
-				);
-				console.log(
-					`File ${file} created at ${path.join(
-						path.dirname('./'),
-						`${state.appName}/${copyFiles[file]}`
-					)}`
-				);
-			} catch (error) {
-				if (error.code === 'EEXIST') tempFiles.push(copyFiles[file]);
-				else throw error;
-			}
+			fs.copyFileSync(
+				path.join(path.dirname('./'), `template/${copyFiles[file]}`),
+				path.join(path.dirname('./'), `${state.appName}/${copyFiles[file]}`)
+			);
+			console.log(
+				`File ${file} created at ${path.join(
+					path.dirname('./'),
+					`${state.appName}/${copyFiles[file]}`
+				)}`
+			);
 		}
-		return tempFiles;
 	};
 
 	const firebaseLogin = () => {
@@ -249,37 +241,7 @@ export default async () => {
 
 		console.log(`Creating files ......`);
 		createDir();
-		const files = createFiles();
-		if (files) {
-			for (let file in files) {
-				const answer = await inquirer.prompt([
-					{
-						name: 'overwrite',
-						type: 'confirm',
-						message: `File ${path.join(
-							path.dirname('./'),
-							`${state.appName}/${files[file]}`
-						)} already exists. Do you want to over write it?`,
-						default() {
-							return false;
-						},
-					},
-				]);
-				if (answer.overwrite) {
-					fs.copyFileSync(
-						path.join(path.dirname('./'), `template/${files[file]}`),
-						path.join(path.dirname('./'), `${state.appName}/${files[file]}`)
-					);
-				} else {
-					console.log(
-						`Skipping file ${path.join(
-							path.dirname('./'),
-							`${state.appName}/${files[file]}`
-						)}`
-					);
-				}
-			}
-		}
+		createFiles();
 		updatePackage();
 		installPackages();
 		firebaseLogin();
