@@ -7,9 +7,7 @@ import inquirer from 'inquirer';
 
 let isFirebase;
 
-let subProcesses = {
-	fireInit,
-};
+let fireInit;
 
 const state = {
 	appName: '',
@@ -63,8 +61,7 @@ const toolchainCommands = Object.values(toolchains);
 
 export default async () => {
 	process.on('exit', () => {
-		if (subProcesses.fireInit && !subProcesses.fireInit.killed)
-			subProcesses.fireInit.kill();
+		if (fireInit && !fireInit.killed) fireInit.kill();
 	});
 
 	const installToolchain = (toolchain, appName) => {
@@ -194,7 +191,7 @@ export default async () => {
 	};
 
 	const firebaseInit = () => {
-		subProcesses.fireInit = spawn('firebase', ['init'], {
+		fireInit = spawn('firebase', ['init'], {
 			cwd: path.join(path.dirname('./'), `${state.appName}/`),
 			stdio: ['inherit', 'inherit', 'inherit'],
 		});
