@@ -1,6 +1,6 @@
 {
   "name": "create-my-firebase-app",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Set up your firebase app with ease",
   "main": "index.js",
   "type": "module",
