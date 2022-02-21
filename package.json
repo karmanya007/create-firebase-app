@@ -1,0 +1,21 @@
+{
+  "name": "create-firebase-app",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/karmanya007/create-firebase-app"
+  },
+  "scripts": {
+    "start": "node ."
+  },
+  "bin": "./index.js",
+  "keywords": [],
+  "author": "Karmanya Veer Sharma",
+  "license": "ISC",
+  "dependencies": {
+    "inquirer": "^8.2.0"
+  }
+}
