@@ -1,7 +1,7 @@
 {
   "name": "create-firebase-app",
   "version": "0.0.1",
-  "description": "",
+  "description": "Set up your firebase app with ease",
   "main": "index.js",
   "type": "module",
   "repository": {
@@ -12,9 +12,7 @@
     "start": "node ."
   },
   "bin": "./index.js",
-  "keywords": [],
   "author": "Karmanya Veer Sharma",
-  "license": "ISC",
   "dependencies": {
     "inquirer": "^8.2.0"
   }
