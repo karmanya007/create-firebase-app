@@ -153,17 +153,13 @@ export default async () => {
 						},
 					]);
 					if (answer.overwrite) {
-						try {
-							fs.copyFileSync(
-								path.join(path.dirname('./'), `template/${copyFiles[file]}`),
-								path.join(
-									path.dirname('./'),
-									`${state.appName}/${copyFiles[file]}`
-								)
-							);
-						} catch (error) {
-							throw error;
-						}
+						fs.copyFileSync(
+							path.join(path.dirname('./'), `template/${copyFiles[file]}`),
+							path.join(
+								path.dirname('./'),
+								`${state.appName}/${copyFiles[file]}`
+							)
+						);
 					} else {
 						console.log(
 							`Skipping file ${path.join(
@@ -172,7 +168,7 @@ export default async () => {
 							)}`
 						);
 					}
-				}
+				} else throw error;
 			}
 		}
 	};
@@ -258,7 +254,7 @@ export default async () => {
 				type: 'input',
 				message: 'Enter your app name : ',
 				default() {
-					return 'my-firebase-app';
+					return 'my-app';
 				},
 			},
 		]);
@@ -280,7 +276,7 @@ export default async () => {
 
 		console.log(`Creating files ......`);
 		createDir();
-		await createFiles();
+		createFiles();
 		updatePackage();
 		installPackages();
 		firebaseLogin();
