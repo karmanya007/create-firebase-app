@@ -122,12 +122,14 @@ export default async () => {
 			}
 		}
 	};
-
 	const createFiles = async () => {
 		for (let file in copyFiles) {
+			console.log(
+				new URL(`./template/${copyFiles[file]}`, import.meta.url).pathname
+			);
 			try {
 				fs.copyFileSync(
-					`./template/${copyFiles[file]}`,
+					new URL(`./template/${copyFiles[file]}`, import.meta.url).pathname,
 					path.join(path.dirname('./'), `${state.appName}/${copyFiles[file]}`),
 					fs.constants.COPYFILE_EXCL
 				);
@@ -154,7 +156,8 @@ export default async () => {
 					]);
 					if (answer.overwrite) {
 						fs.copyFileSync(
-							`./template/${copyFiles[file]}`,
+							new URL(`./template/${copyFiles[file]}`, import.meta.url)
+								.pathname,
 							path.join(
 								path.dirname('./'),
 								`${state.appName}/${copyFiles[file]}`
