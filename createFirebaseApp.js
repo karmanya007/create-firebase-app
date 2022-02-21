@@ -69,10 +69,10 @@ export default async () => {
 			cwd: path.dirname('./'),
 			stdio: ['ignore', 'inherit', 'inherit'],
 		});
-		/* if (tool.error || tool.status !== 0 || tool.signal) {
+		if (tool.error || tool.status !== 0 || tool.signal) {
 			tool.error ? console.error(tool.error) : null;
 			process.exit(process.exitCode);
-		} */
+		}
 	};
 
 	const checkFirebase = () => {
@@ -123,18 +123,53 @@ export default async () => {
 		}
 	};
 
-	const createFiles = () => {
+	const createFiles = async () => {
 		for (let file in copyFiles) {
-			fs.copyFileSync(
-				path.join(path.dirname('./'), `template/${copyFiles[file]}`),
-				path.join(path.dirname('./'), `${state.appName}/${copyFiles[file]}`)
-			);
-			console.log(
-				`File ${file} created at ${path.join(
-					path.dirname('./'),
-					`${state.appName}/${copyFiles[file]}`
-				)}`
-			);
+			try {
+				fs.copyFileSync(
+					`./template/${copyFiles[file]}`,
+					path.join(path.dirname('./'), `${state.appName}/${copyFiles[file]}`),
+					fs.constants.COPYFILE_EXCL
+				);
+				console.log(
+					`File ${file} created at ${path.join(
+						path.dirname('./'),
+						`${state.appName}/${copyFiles[file]}`
+					)}`
+				);
+			} catch (error) {
+				if (error.code === 'EEXIST') {
+					const answer = await inquirer.prompt([
+						{
+							name: 'overwrite',
+							type: 'confirm',
+							message: `File ${path.join(
+								path.dirname('./'),
+								`${state.appName}/${copyFiles[file]}`
+							)} already exists. Do you want to over write it?`,
+							default() {
+								return false;
+							},
+						},
+					]);
+					if (answer.overwrite) {
+						fs.copyFileSync(
+							`./template/${copyFiles[file]}`,
+							path.join(
+								path.dirname('./'),
+								`${state.appName}/${copyFiles[file]}`
+							)
+						);
+					} else {
+						console.log(
+							`Skipping file ${path.join(
+								path.dirname('./'),
+								`${state.appName}/${copyFiles[file]}`
+							)}`
+						);
+					}
+				} else throw error;
+			}
 		}
 	};
 
@@ -241,7 +276,7 @@ export default async () => {
 
 		console.log(`Creating files ......`);
 		createDir();
-		createFiles();
+		await createFiles();
 		updatePackage();
 		installPackages();
 		firebaseLogin();
